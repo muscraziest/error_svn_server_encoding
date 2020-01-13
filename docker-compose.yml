@@ -1,0 +1,15 @@
+version: '2.1'
+services:
+  svn-server:
+    build:
+      dockerfile: svn-server.Dockerfile
+      context: .
+    ports:
+      - "3690:3690"
+  salt-master:
+    build:
+      dockerfile: salt-master.Dockerfile
+      context: .
+    command: salt-run salt.cmd svn.checkout /tmp svn://svn-server/testrepo
+    depends_on:
+      - svn-server
